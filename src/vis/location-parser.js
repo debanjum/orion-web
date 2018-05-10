@@ -94,8 +94,8 @@ export default class LocationParser {
       id: 'location-scatterplot',
       data: this._getScatterplotLayerData(),
       fp64: true,
-      radiusMinPixels: 3.5,
-      radiusMaxPixels: 3.5,
+      radiusMinPixels: 7.5,
+      radiusMaxPixels: 7.5,
       pickable: true,
       onHover,
     });
@@ -115,7 +115,7 @@ export default class LocationParser {
     return new LineLayer({
       id: 'location-line',
       data,
-      strokeWidth: 3,
+      strokeWidth: 21,
       fp64: true,
     });
   }
@@ -128,8 +128,8 @@ export default class LocationParser {
     return new ScreenGridLayer({
       id: 'location-screen-grid',
       data: this._getScreenGridLayerData(),
-      minColor: [0, 0, 0, 0],
-      maxColor: [90, 189, 250, 245],
+      minColor: [0, 0, 0, 255],
+      maxColor: [240, 30, 90, 255],
       cellSizePixels: 20,
     });
   }
@@ -160,7 +160,7 @@ export default class LocationParser {
       .filter(({ accuracy }) => accuracy <= this.accuracyThreshold)
       .map(({ timestamp, accuracy, latitude, longitude }) => ({
         position: [longitude, latitude],
-        color: [59, 149, 204, 180],
+        color: [59, 149, 255, 255],
         timestamp,
         accuracy,
       }));
