@@ -7,11 +7,11 @@ import {
 import createReducer from 'app/redux/reducers/create-reducer';
 
 const initialState = {
-  user: null,
-  device: null,
+  user: 'user',
+  device: 'phone',
   timestamp: {
-    start: (new Date().getTime() / 1000) - (31 * 24 * 3600),
-    end: (new Date().getTime() / 1000) + (24 * 3600),
+    start: new Date().setHours(0, 0, 0, 0) / 1000,
+    end: new Date().setHours(23, 59, 59, 999) / 1000,
   },
 };
 

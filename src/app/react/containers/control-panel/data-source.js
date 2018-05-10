@@ -4,7 +4,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Alert, Spacing } from 'react-elemental';
 import dottie from 'dottie';
-import withResource from 'app/react/hoc/with-resource';
 import DataSource from 'app/react/components/control-panel/data-source';
 import {
   setUser,
@@ -30,7 +29,7 @@ const DataSourceContainer = ({
   handleTimestampEndChange,
 }) => {
   const users = data.map((entry) => entry.user);
-  const devices = dottie.get(data.find((entry) => entry.user === user), 'devices', []);
+  const devices = dottie.get(data.find((entry) => entry.user === user), 'devices', ['phone']);
 
   return (
     <div>
@@ -63,7 +62,7 @@ const DataSourceContainer = ({
 DataSourceContainer.propTypes = {
   userDevices: PropTypes.shape({
     data: PropTypes.array,
-  }).isRequired,
+  }),
   user: PropTypes.string,
   timestamp: PropTypes.shape({
     start: PropTypes.number.isRequired,
@@ -77,7 +76,8 @@ DataSourceContainer.propTypes = {
 };
 
 DataSourceContainer.defaultProps = {
-  user: null,
+  user: 'user',
+  userDevices: ['phone'],
 };
 
 const mapStateToProps = ({ context, dataSource }) => ({
@@ -118,8 +118,4 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withResource({
-    key: 'userDevices',
-    endpoint: '/api/users',
-  }),
 )(DataSourceContainer);
