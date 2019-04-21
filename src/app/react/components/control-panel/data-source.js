@@ -11,6 +11,7 @@ const DataSource = ({
   fieldWidth,
   onTimestampStartChange,
   onTimestampEndChange,
+  onDayChange,
 }) => (
   <div>
     <Spacing size="small" bottom>
@@ -29,6 +30,19 @@ const DataSource = ({
           type="date"
           value={timestampStart}
           onChange={onTimestampStartChange}
+          style={{ width: `${fieldWidth + 20}px` }}
+        />
+      </div>
+
+      <div>
+        <Label
+          label="Day"
+          sublabel="Day to query"
+        />
+        <TextField
+          type="date"
+          value={timestampStart}
+          onChange={onDayChange}
           style={{ width: `${fieldWidth + 20}px` }}
         />
       </div>
@@ -62,6 +76,8 @@ DataSource.propTypes = {
   onTimestampStartChange: PropTypes.func.isRequired,
   // Callback to invoke when the ending timestamp is changed
   onTimestampEndChange: PropTypes.func.isRequired,
+  // Callback to invoke when the day timestamp is changed
+  onDayChange: PropTypes.func.isRequired,
 };
 
 export default DataSource;

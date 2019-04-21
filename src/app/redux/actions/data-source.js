@@ -1,5 +1,6 @@
 export const SET_TIMESTAMP_START = 'SET_TIMESTAMP_START';
 export const SET_TIMESTAMP_END = 'SET_TIMESTAMP_END';
+export const SET_DAY_START_END = 'SET_DAY_START_END';
 
 /**
  * Set the beginning timestamp range for queried data.
@@ -22,3 +23,15 @@ export const setTimestampEnd = (timestamp) => ({
   type: SET_TIMESTAMP_END,
   payload: { timestamp },
 });
+
+/**
+ * Set the timestamp range for single day queried data.
+ *
+ * @param {number} timestamp Unix timestamp denoting the beginning range of the time range.
+ * @return {Object} Action for setting the starting and ending timestamps.
+ */
+export const setDayStartEnd = (timestamp) => ({
+  type: SET_DAY_START_END,
+  payload: { timestamp },
+});
+
