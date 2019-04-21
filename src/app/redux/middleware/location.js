@@ -15,23 +15,16 @@ let locationLoadID = 0;
 const fetchLocationsMiddleware = (store) => {
   const {
     context: { width, height },
-    dataSource: { user, device, timestamp },
+    dataSource: { timestamp },
     filters: { accuracyThreshold },
     map: { viewport },
   } = store.getState();
-
-  // Don't attempt to fetch location data if a user and device aren't specified
-  if (!user || !device) {
-    return;
-  }
 
   const opts = {
     id: 'locations',
     endpoint: '/api/locations',
     method: 'POST',
     data: {
-      user,
-      device,
       timestamp_start: timestamp.start,
       timestamp_end: timestamp.end,
       limit: null,

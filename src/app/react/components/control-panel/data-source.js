@@ -1,18 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Label, SelectList, Spacing, Text, TextField } from 'react-elemental';
+import { Label, Spacing, Text, TextField } from 'react-elemental';
 
 /**
  * Controls for setting parameters related to the source of location data for visualization.
  */
 const DataSource = ({
-  users,
-  devices,
   timestampStart,
   timestampEnd,
   fieldWidth,
-  onUserChange,
-  onDeviceChange,
   onTimestampStartChange,
   onTimestampEndChange,
 }) => (
@@ -21,32 +17,6 @@ const DataSource = ({
       <Text uppercase bold>
         Data source
       </Text>
-    </Spacing>
-
-    <Spacing bottom style={{ display: 'flex', justifyContent: 'space-between' }}>
-      <div>
-        <Label
-          label="User"
-          sublabel="User for queried locations"
-        />
-        <SelectList
-          options={users.map((user) => ({ value: user, label: user }))}
-          width={fieldWidth}
-          onChange={onUserChange}
-        />
-      </div>
-
-      <div>
-        <Label
-          label="Device"
-          sublabel="Device owned by this user"
-        />
-        <SelectList
-          options={devices.map((user) => ({ value: user, label: user }))}
-          width={fieldWidth}
-          onChange={onDeviceChange}
-        />
-      </div>
     </Spacing>
 
     <Spacing bottom style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -80,20 +50,14 @@ const DataSource = ({
 );
 
 DataSource.propTypes = {
-  // Array of available users
-  users: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // Array of devices owned by this user
-  devices: PropTypes.arrayOf(PropTypes.string).isRequired,
   // Start of the timestamp to query
   timestampStart: PropTypes.string.isRequired,
   // End of the timestamp to query
   timestampEnd: PropTypes.string.isRequired,
   // Width (in pixels) of each editable field
   fieldWidth: PropTypes.number.isRequired,
-  // Callback to invoke when the user is changed
-  onUserChange: PropTypes.func.isRequired,
-  // Callback to invoke when the device is changed
-  onDeviceChange: PropTypes.func.isRequired,
+
+
   // Callback to invoke when the starting timestamp is changed
   onTimestampStartChange: PropTypes.func.isRequired,
   // Callback to invoke when the ending timestamp is changed

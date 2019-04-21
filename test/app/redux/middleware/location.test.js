@@ -11,8 +11,6 @@ const DEFAULT_STATE = {
     height: 100,
   },
   dataSource: {
-    user: 'user',
-    device: 'device',
     timestamp: {
       start: 1,
       end: 10,
@@ -27,24 +25,6 @@ const DEFAULT_STATE = {
 };
 
 describe('Location middleware', () => {
-  test('Noop if user or device is not defined', () => {
-    const store = {
-      getState: () => ({
-        ...DEFAULT_STATE,
-        dataSource: {
-          ...DEFAULT_STATE.dataSource,
-          device: null,
-        },
-      }),
-    };
-    const next = jest.fn(() => 'result');
-    const action = fetchLocations();
-
-    locationMiddleware(store)(next)(action);
-
-    expect(resource).not.toBeCalled();
-  });
-
   test('Noop if resource is duplicated', () => {
     const mockDispatch = jest.fn();
     const store = {

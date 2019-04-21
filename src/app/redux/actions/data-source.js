@@ -1,29 +1,5 @@
-export const SET_USER = 'SET_USER';
-export const SET_DEVICE = 'SET_DEVICE';
 export const SET_TIMESTAMP_START = 'SET_TIMESTAMP_START';
 export const SET_TIMESTAMP_END = 'SET_TIMESTAMP_END';
-
-/**
- * Set the user whose data should be queried.
- *
- * @param {string} user Username.
- * @return {Object} Action for setting the current user.
- */
-export const setUser = (user) => ({
-  type: SET_USER,
-  payload: { user },
-});
-
-/**
- * Set the device corresponding to the selected user.
- *
- * @param {string} device Device name for the current user.
- * @return {Object} Action for setting the current device.
- */
-export const setDevice = (device) => ({
-  type: SET_DEVICE,
-  payload: { device },
-});
 
 /**
  * Set the beginning timestamp range for queried data.
