@@ -13,7 +13,7 @@ export const setTimestampStart = (timestamp) => ({
 });
 
 /**
- * Set the ending timestamp range for queried dat.
+ * Set the ending timestamp range for queried data.
  *
  * @param {number} timestamp Unix timestamp denoting the ending range.
  * @return {Object} Action for setting the ending timestamp.

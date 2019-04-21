@@ -6,8 +6,8 @@ import createReducer from 'app/redux/reducers/create-reducer';
 
 const initialState = {
   timestamp: {
-    start: new Date().setHours(0, 0, 0, 0) / 1000,
-    end: new Date().setHours(23, 59, 59, 999) / 1000,
+    start: new Date(new Date().setDate((new Date().getDate() - 1))).setHours(0, 0, 0, 0) / 1000,
+    end: new Date().setHours(0, 0, 0, 0) / 1000,
   },
 };
 
