@@ -4,8 +4,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import DataSource from 'app/react/components/control-panel/data-source';
 import {
-  setTimestampStart,
-  setTimestampEnd,
   setDayStartEnd,
 } from 'app/redux/actions/data-source';
 import { fetchLocations } from 'app/redux/actions/location';
@@ -18,17 +16,12 @@ import { dateToUnixTimestamp, unixTimestampToDate } from 'app/util/time';
 const DataSourceContainer = ({
   timestamp,
   fieldWidth,
-  handleTimestampStartChange,
-  handleTimestampEndChange,
   handleDayChange,
 }) => (
   <div>
     <DataSource
       timestampStart={unixTimestampToDate(timestamp.start)}
-      timestampEnd={unixTimestampToDate(timestamp.end)}
       fieldWidth={fieldWidth}
-      onTimestampStartChange={handleTimestampStartChange}
-      onTimestampEndChange={handleTimestampEndChange}
       onDayChange={handleDayChange}
     />
   </div>
@@ -40,8 +33,6 @@ DataSourceContainer.propTypes = {
     end: PropTypes.number.isRequired,
   }).isRequired,
   fieldWidth: PropTypes.number.isRequired,
-  handleTimestampStartChange: PropTypes.func.isRequired,
-  handleTimestampEndChange: PropTypes.func.isRequired,
   handleDayChange: PropTypes.func.isRequired,
 };
 
@@ -69,8 +60,6 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(func(dateToUnixTimestamp(evt.target.value)));
 
   return {
-    handleTimestampStartChange: withLocationFetch(setTimestampValue)(setTimestampStart),
-    handleTimestampEndChange: withLocationFetch(setTimestampValue)(setTimestampEnd),
     handleDayChange: withLocationFetch(setTimestampValue)(setDayStartEnd),
   };
 };
