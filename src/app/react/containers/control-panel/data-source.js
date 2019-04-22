@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import DataSource from 'app/react/components/control-panel/data-source';
 import {
   setDayStartEnd,
+  setPreviousDayStartEnd,
+  setNextDayStartEnd,
 } from 'app/redux/actions/data-source';
 import { fetchLocations } from 'app/redux/actions/location';
 import { dateToUnixTimestamp, unixTimestampToDate } from 'app/util/time';
@@ -17,12 +19,16 @@ const DataSourceContainer = ({
   timestamp,
   fieldWidth,
   handleDayChange,
+  handlePreviousDayChange,
+  handleNextDayChange,
 }) => (
   <div>
     <DataSource
       timestampStart={unixTimestampToDate(timestamp.start)}
       fieldWidth={fieldWidth}
       onDayChange={handleDayChange}
+      previousDayChange={handlePreviousDayChange}
+      nextDayChange={handleNextDayChange}
     />
   </div>
 );
@@ -34,6 +40,8 @@ DataSourceContainer.propTypes = {
   }).isRequired,
   fieldWidth: PropTypes.number.isRequired,
   handleDayChange: PropTypes.func.isRequired,
+  handlePreviousDayChange: PropTypes.func.isRequired,
+  handleNextDayChange: PropTypes.func.isRequired,
 };
 
 DataSourceContainer.defaultProps = {
@@ -59,8 +67,17 @@ const mapDispatchToProps = (dispatch) => {
   const setTimestampValue = (func) => (evt) =>
     dispatch(func(dateToUnixTimestamp(evt.target.value)));
 
+  // Execute a location data fetch after every eligible parameter change
+  const withNoArgLocationFetch = (actionCreator) => (..._) => {
+    dispatch(actionCreator());
+    dispatch(fetchLocations());
+    return actionCreator;
+  };
+
   return {
     handleDayChange: withLocationFetch(setTimestampValue)(setDayStartEnd),
+    handlePreviousDayChange: withNoArgLocationFetch(setPreviousDayStartEnd),
+    handleNextDayChange: withNoArgLocationFetch(setNextDayStartEnd),
   };
 };
 

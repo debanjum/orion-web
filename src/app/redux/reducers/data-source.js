@@ -2,6 +2,8 @@ import {
   SET_TIMESTAMP_START,
   SET_TIMESTAMP_END,
   SET_DAY_START_END,
+  SET_PREVIOUS_DAY,
+  SET_NEXT_DAY,
 } from 'app/redux/actions/data-source';
 import createReducer from 'app/redux/reducers/create-reducer';
 
@@ -39,10 +41,30 @@ const setDayStartEndReducer = (state, action) => ({
   },
 });
 
+const setPreviousDayReducer = (state, _) => ({
+  ...state,
+  timestamp: {
+    ...state.timestamp,
+    start: state.timestamp.start - secondsInDay,
+    end: state.timestamp.end - secondsInDay,
+  },
+});
+
+const setNextDayReducer = (state, _) => ({
+  ...state,
+  timestamp: {
+    ...state.timestamp,
+    start: state.timestamp.start + secondsInDay,
+    end: state.timestamp.end + secondsInDay,
+  },
+});
+
 const reducerMapping = {
   [SET_TIMESTAMP_START]: setTimestampStartReducer,
   [SET_TIMESTAMP_END]: setTimestampEndReducer,
   [SET_DAY_START_END]: setDayStartEndReducer,
+  [SET_PREVIOUS_DAY]: setPreviousDayReducer,
+  [SET_NEXT_DAY]: setNextDayReducer,
 };
 
 export default createReducer(reducerMapping, initialState);
