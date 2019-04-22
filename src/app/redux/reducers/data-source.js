@@ -7,11 +7,20 @@ import {
 } from 'app/redux/actions/data-source';
 import createReducer from 'app/redux/reducers/create-reducer';
 
-const initialState = {
-  timestamp: {
-    start: new Date(new Date().setDate((new Date().getDate() - 1))).setHours(0, 0, 0, 0) / 1000,
-    end: new Date().setHours(0, 0, 0, 0) / 1000,
-  },
+const initialStateFactory = () => {
+  // By default, set the start timestamp to the beginning of the current day, in local time.
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / 1000;
+
+  // By default, set the end timestamp to the beginning of the next day, in local time.
+  const tomorrow = today + (24 * 60 * 60);
+
+  return {
+    timestamp: {
+      start: today,
+      end: tomorrow,
+    },
+  };
 };
 
 const secondsInDay = 24 * 60 * 60;
@@ -67,4 +76,4 @@ const reducerMapping = {
   [SET_NEXT_DAY]: setNextDayReducer,
 };
 
-export default createReducer(reducerMapping, initialState);
+export default createReducer(reducerMapping, initialStateFactory());

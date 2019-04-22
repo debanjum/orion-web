@@ -1,5 +1,9 @@
 import { LineLayer, ScatterplotLayer, ScreenGridLayer } from 'deck.gl';
+import geolib from 'geolib';
 import humanize from 'humanize';
+import humanizeDuration from 'humanize-duration';
+
+const TIMESTAMP_FORMAT = 'F j, Y, g:i:s A';
 
 /**
  * Decorator for transparently caching the return value of a method. The initial return value is
@@ -83,7 +87,7 @@ export default class LocationParser {
         x,
         y,
         annotations: [
-          { heading: 'Timestamp', value: humanize.date('F j, Y, g:i:s A', timestamp) },
+          { heading: 'Timestamp', value: humanize.date(TIMESTAMP_FORMAT, timestamp) },
           { heading: 'Coordinates', value: `(${lat}, ${lon})` },
           { heading: 'Accuracy', value: `${accuracy} m` },
         ],
@@ -94,9 +98,12 @@ export default class LocationParser {
       id: 'location-scatterplot',
       data: this._getScatterplotLayerData(),
       fp64: true,
-      radiusMinPixels: 7.5,
+      radiusScale: 20,
+      radiusMinPixels: 3.5,
       radiusMaxPixels: 7.5,
       pickable: true,
+      autoHighlight: true,
+      highlightColor: [255, 255, 255, 255],
       onHover,
     });
   }
@@ -112,11 +119,51 @@ export default class LocationParser {
       return null;
     }
 
+    const onHover = ({ x, y, object }) => {
+      if (!object) {
+        return this.onPickHover();
+      }
+
+      const {
+        sourcePosition: [sourceLon, sourceLat],
+        targetPosition: [targetLon, targetLat],
+        sourceTimestamp,
+        targetTimestamp,
+      } = object;
+
+      // Distance between the two coordinates in meters.
+      const dist = geolib.getDistance(
+        { latitude: sourceLat, longitude: sourceLon },
+        { latitude: targetLat, longitude: targetLon },
+        1,
+        2,
+      );
+
+      // Duration of time elapsed from the source to target coordinates, as an English description.
+      const duration = humanizeDuration(1000 * (targetTimestamp - sourceTimestamp));
+
+      return this.onPickHover({
+        x,
+        y,
+        annotations: [
+          { heading: 'Timestamp', value: humanize.date(TIMESTAMP_FORMAT, sourceTimestamp) },
+          { heading: 'Source', value: `(${sourceLat}, ${sourceLon})` },
+          { heading: 'Destination', value: `(${targetLat}, ${targetLon})` },
+          { heading: 'Distance delta', value: `${dist} meters` },
+          { heading: 'Time delta', value: duration },
+        ],
+      });
+    };
+
     return new LineLayer({
       id: 'location-line',
       data,
       strokeWidth: 21,
       fp64: true,
+      pickable: true,
+      autoHighlight: true,
+      highlightColor: [255, 255, 255, 255],
+      onHover,
     });
   }
 
@@ -184,7 +231,9 @@ export default class LocationParser {
 
     const firstPosition = {
       sourcePosition: [eligibleData[0].longitude, eligibleData[0].latitude],
+      sourceTimestamp: eligibleData[0].timestamp,
       targetPosition: [eligibleData[0].longitude, eligibleData[0].latitude],
+      targetTimestamp: eligibleData[0].timestamp,
     };
     const { timestamp: lastTimestamp } = eligibleData[eligibleData.length - 1];
 
@@ -195,9 +244,11 @@ export default class LocationParser {
           (lastTimestamp - this._getMinTimestamp());
         const entry = {
           sourcePosition: lastEntry.targetPosition,
+          sourceTimestamp: lastEntry.targetTimestamp,
           targetPosition: [longitude, latitude],
+          targetTimestamp: timestamp,
           // Start of the path is red; end of the path is blue
-          color: [255 * (1 - colorRatio), 160 * colorRatio, 255 * colorRatio],
+          color: [255 * (1 - colorRatio), 160 * colorRatio, 255 * colorRatio, 180],
         };
         return [...acc, entry];
       }, [firstPosition]);

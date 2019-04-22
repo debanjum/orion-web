@@ -10,11 +10,15 @@
 
 [**Live demo**](https://linkiwi.github.io/orion-web/) using sample location data
 
-![dots-sf-alt](https://static.kevinlin.info/blog/orion/dots-sf-alt.png)
+![dots-sf-alt](https://static.kevinlin.info/blog/orion/dots-sf-alt.jpg)
 
-![path-sf](https://static.kevinlin.info/blog/orion/path-sf.png)
+![path-soma](https://static.kevinlin.info/blog/orion/path-soma.jpg)
 
-![heatmap-bay](https://static.kevinlin.info/blog/orion/heatmap-bay.png)
+![path-sf](https://static.kevinlin.info/blog/orion/path-sf.jpg)
+
+![dots-sf](https://static.kevinlin.info/blog/orion/dots-sf.jpg)
+
+![heatmap-bay](https://static.kevinlin.info/blog/orion/heatmap-bay.jpg)
 
 ## Overview
 
@@ -31,9 +35,9 @@ The web interface builds on the functionality provided by the official [OwnTrack
 
 ## Installation
 
-You'll need `npm` and a working deployment of [`orion-server`](https://github.com/LINKIWI/orion-server).
+You'll need a `node` runtime, `npm`, and a working deployment of [`orion-server`](https://github.com/LINKIWI/orion-server). Follow the instructions at the [Node.js](https://nodejs.org/en/) website on how to get the first two set up for your platform.
 
-First and foremost, create a [Mapbox API token](https://www.mapbox.com/help/how-access-tokens-work/) for your deployment. This is used to render the interactive map.
+First and foremost, create a [Mapbox API token](https://www.mapbox.com/help/how-access-tokens-work/) for your deployment.\* This is used to render the interactive map.
 
 Get the source code and bootstrap the application:
 
@@ -50,6 +54,8 @@ $ NODE_ENV=production MAPBOX_API_TOKEN=<your Mapbox API token> ORION_SERVER_URL=
 ```
 
 That's it! This produces a completely self-contained static frontend file at `dist/index.html`. You can deploy this however you see fit. For example, if you followed the deployment instructions in the README for `orion-server`, you can use an `Alias` directive to map all non-API routes for the Orion virtual host to this static file.
+
+*\* While I am not in any position to provide official legal advice, you should review and agree to the [terms of service](https://www.mapbox.com/tos) set forth by Mapbox before creating and using an API key.*
 
 ## Display modes
 
