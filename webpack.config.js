@@ -3,7 +3,6 @@
 const dotenv = require('dotenv');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -56,13 +55,6 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      new UglifyJSPlugin({
-        uglifyOptions: {
-          output: {
-            comments: false,
-          },
-        },
-      }),
     ],
   },
   performance: {
